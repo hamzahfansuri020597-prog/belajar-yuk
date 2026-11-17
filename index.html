@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Belajar Yuk!</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff7043">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+body{margin:0;font-family:system-ui,sans-serif;background:#fff7e0;text-align:center;min-height:100vh;overflow-x:hidden}
+h1{font-size:2rem;margin:20px 0 10px;color:#ff7043}
+.hidden{display:none}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px;max-width:500px;margin:auto}
+.menu button{font-size:1.6rem;padding:30px 10px;border:none;border-radius:24px;color:#fff;font-weight:bold;box-shadow:0 6px 0 rgba(0,0,0,.2)}
+.menu button span{display:block;font-size:3.5rem}
+.tes{font-size:1.3rem;border:none;background:#fff;border-radius:16px;padding:12px 24px;box-shadow:0 3px 0 rgba(0,0,0,.15);margin:6px}
+#info{font-size:.9rem;color:#795548;margin:8px 16px}
+#namaBox{max-width:500px;margin:0 auto 6px;padding:0 16px}
+.nm-judul{font-weight:bold;color:#5d4037;margin:4px 0}
+#namaList{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.nm{font-size:1.3rem;font-weight:bold;border:3px solid transparent;background:#fff;color:#5d4037;border-radius:18px;padding:8px 18px;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.nm.aktif{background:#ffb74d;border-color:#ef6c00;color:#fff}
+.nm-aksi{display:flex;justify-content:center;gap:8px;margin-top:8px}
+.nm-b{font-size:1rem;border:none;background:#fff;border-radius:14px;padding:8px 14px;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px 16px}
+.top button{font-size:1.5rem;border:none;background:#fff;border-radius:16px;padding:8px 16px;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+#stars{font-size:1.6rem}
+#stage{font-size:3rem;min-height:110px;padding:8px;line-height:1.2}
+#q{font-size:1.6rem;font-weight:bold;color:#5d4037;margin:6px 12px}
+.choices{display:flex;justify-content:center;gap:14px;padding:16px;flex-wrap:wrap}
+.choice{width:28vw;max-width:150px;height:28vw;max-height:150px;background:#fff;border:none;border-radius:28px;font-size:4.5rem;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 0 rgba(0,0,0,.18)}
+.choice:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.ar{font-family:'Noto Naskh Arabic','Traditional Arabic','Geeza Pro',serif;color:#1b5e20}
+.abc{font-weight:bold;color:#5e35b1}
+.dot{width:70%;height:70%;border-radius:50%}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.pop{animation:pop .5s}
+@keyframes pop{50%{transform:scale(1.25)}}
+.fall{position:fixed;top:-50px;font-size:2.5rem;animation:fall 1.6s linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+.jgrid{display:grid;gap:8px;max-width:340px;margin:10px auto;padding:0 16px}
+.jc{aspect-ratio:1;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;border:none;background:#fff3b0;box-shadow:0 4px 0 rgba(0,0,0,.18);padding:0}
+.jc.blok{background:#43a047}
+.jc.lalu{background:#ffd54f}
+.sseq{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;min-height:64px;margin:8px 16px;padding:6px;font-size:2.2rem;background:#fff;border-radius:20px;border:3px dashed #bdbdbd}
+.sbtns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:8px 16px}
+.sb{width:70px;height:70px;font-size:2.2rem;border:none;border-radius:20px;background:#fff;box-shadow:0 5px 0 rgba(0,0,0,.18);padding:0}
+.sb:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.sb.go{background:#43a047;width:100px}
+.sb.del{background:#ffcdd2}
+.kartu{aspect-ratio:1;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:3rem;border:none;background:#5c6bc0;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.2);padding:0}
+.kartu.buka{background:#fff;color:#000}
+.kartu.cocok{background:#c8e6c9;color:#000}
+</style>
+</head>
+<body>
+
+<div id="menu">
+  <h1>Belajar Yuk! 🌈</h1>
+  <div id="namaBox">
+    <div class="nm-judul">Siapa yang main?</div>
+    <div id="namaList"></div>
+    <div class="nm-aksi">
+      <button class="nm-b" onclick="tambahNama()">➕ Tambah Nama</button>
+      <button class="nm-b" onclick="hapusNama()">🗑️ Hapus Nama</button>
+    </div>
+  </div>
+  <div class="menu">
+    <button style="background:#e53935" onclick="start('warna')"><span>🎨</span>Warna</button>
+    <button style="background:#43a047" onclick="start('hewan')"><span>🐶</span>Hewan</button>
+    <button style="background:#1e88e5" onclick="start('bentuk')"><span>🔷</span>Bentuk</button>
+    <button style="background:#fb8c00" onclick="start('angka')"><span>🔢</span>Hitung</button>
+    <button style="background:#e65100" onclick="start('buahsayur')"><span>🍎</span>Buah &amp; Sayur</button>
+    <button style="background:#5e35b1" onclick="start('alfabet')"><span>🔤</span>Huruf ABC</button>
+    <button style="background:#00acc1;grid-column:span 2" onclick="start('benda')"><span>🏠</span>Benda Sekitar</button>
+    <button style="background:#6d4c41;grid-column:span 2" onclick="start('tubuh')"><span>👁️</span>Anggota Tubuh</button>
+    <button style="background:#00897b;grid-column:span 2" onclick="start('hijaiyah')"><span>🕌</span>Huruf Hijaiyah</button>
+    <button style="background:#8e24aa;grid-column:span 2" onclick="startJalan()"><span>🐰</span>Jalan</button>
+    <button style="background:#3949ab;grid-column:span 2" onclick="startSusun()"><span>🧩</span>Susun Langkah</button>
+    <button style="background:#d81b60;grid-column:span 2" onclick="startPasang()"><span>🃏</span>Cocokkan Pasangan</button>
+  </div>
+  <button class="tes" onclick="tesSuara()">🔊 Tes Suara</button>
+  <div id="info"></div>
+</div>
+
+<div id="game" class="hidden">
+  <div class="top">
+    <button onclick="home()">🏠</button>
+    <div id="stars"></div>
+    <button onclick="ulang()">🔊</button>
+  </div>
+  <div id="stage"></div>
+  <div id="q"></div>
+  <div class="choices" id="choices"></div>
+</div>
+
+<div id="jalan" class="hidden">
+  <div class="top">
+    <button onclick="home()">🏠</button>
+    <div id="jstars" style="font-size:1.6rem"></div>
+    <button onclick="ulangJalan()">🔊</button>
+  </div>
+  <div id="jq" style="font-size:1.6rem;font-weight:bold;color:#5d4037;margin:6px 12px">Bantu kelinci ke wortel!</div>
+  <div class="jgrid" id="jgrid"></div>
+</div>
+
+<div id="susun" class="hidden">
+  <div class="top">
+    <button onclick="home()">🏠</button>
+    <div id="sstars" style="font-size:1.6rem"></div>
+    <button onclick="ulangSusun()">🔊</button>
+  </div>
+  <div class="jgrid" id="sgrid"></div>
+  <div class="sseq" id="sseq"></div>
+  <div class="sbtns">
+    <button class="sb" onclick="tambahLangkah('atas')">⬆️</button>
+    <button class="sb" onclick="tambahLangkah('bawah')">⬇️</button>
+    <button class="sb" onclick="tambahLangkah('kiri')">⬅️</button>
+    <button class="sb" onclick="tambahLangkah('kanan')">➡️</button>
+  </div>
+  <div class="sbtns">
+    <button class="sb go" onclick="jalankanSusun()">▶️</button>
+    <button class="sb del" onclick="hapusLangkah()">🗑️</button>
+  </div>
+</div>
+
+<div id="pasang" class="hidden">
+  <div class="top">
+    <button onclick="home()">🏠</button>
+    <div id="pstars" style="font-size:1.6rem"></div>
+    <button onclick="ulangPasang()">🔊</button>
+  </div>
+  <div id="pq" style="font-size:1.6rem;font-weight:bold;color:#5d4037;margin:6px 12px">Cari gambar yang sama!</div>
+  <div class="jgrid" id="pgrid"></div>
+</div>
+
+<script>
+// ====== NAMA ANAK ======
+// Nama yang dipilih di menu. Daftar nama dikelola lewat tombol di menu (tersimpan di perangkat).
+let NAMA = 'Adik';
+const NAMA_AWAL = ['Adik'];    // daftar nama bawaan (kalau belum ada yang tersimpan)
+const MAKS_NAMA = 10;          // jumlah nama maksimal
+// ========================
+
+// Jumlah huruf hijaiyah yang dipakai (1-28). Untuk mulai dari yang mudah, ubah ke 10.
+const JUMLAH_HURUF = 28;
+
+const dot = c => `<div class="dot" style="background:${c}"></div>`;
+const HIJAIYAH = [
+  {name:'alif',  view:'ا'},{name:'ba',    view:'ب'},{name:'ta',    view:'ت'},
+  {name:'tsa',   view:'ث'},{name:'jim',   view:'ج'},{name:'ha',    view:'ح'},
+  {name:'kho',   view:'خ'},{name:'dal',   view:'د'},{name:'dzal',  view:'ذ'},
+  {name:'ro',    view:'ر'},{name:'zay',   view:'ز'},{name:'sin',   view:'س'},
+  {name:'syin',  view:'ش'},{name:'shod',  view:'ص'},{name:'dhod',  view:'ض'},
+  {name:'tho',   view:'ط'},{name:'zho',   view:'ظ'},{name:'ain',   view:'ع'},
+  {name:'ghoin', view:'غ'},{name:'fa',    view:'ف'},{name:'qof',   view:'ق'},
+  {name:'kaf',   view:'ك'},{name:'lam',   view:'ل'},{name:'mim',   view:'م'},
+  {name:'nun',   view:'ن'},{name:'wawu',  view:'و'},{name:'ha',    view:'ه'},
+  {name:'ya',    view:'ي'}
+];
+const DATA = {
+  warna: [
+    {name:'merah',  view:dot('#e53935')},
+    {name:'biru',   view:dot('#1e88e5')},
+    {name:'kuning', view:dot('#fdd835')},
+    {name:'hijau',  view:dot('#43a047')},
+    {name:'oranye', view:dot('#fb8c00')},
+    {name:'ungu',   view:dot('#8e24aa')},
+    {name:'pink',   view:dot('#ec407a')}
+  ],
+  hewan: [
+    {name:'anjing',  file:'anjing',  view:'🐶', bunyi:'guk guk guk'},
+    {name:'kucing',  file:'kucing',  view:'🐱', bunyi:'meong meong'},
+    {name:'sapi',    file:'sapi',    view:'🐮', bunyi:'mooo mooo'},
+    {name:'ayam',    file:'ayam',    view:'🐔', bunyi:'kukuruyuk', maks:5},
+    {name:'bebek',   file:'bebek',   view:'🦆', bunyi:'kwek kwek'},
+    {name:'kambing', file:'kambing', view:'🐐', bunyi:'mbeek mbeek'},
+    {name:'domba',   file:'domba',   view:'🐑', bunyi:'mbeeek mbeeek'},
+    {name:'kuda',    file:'kuda',    view:'🐴', bunyi:'ihihihi'},
+    {name:'babi',    file:'babi',    view:'🐷', bunyi:'oink oink'},
+    {name:'singa',   file:'singa',   view:'🦁', bunyi:'groaarr'},
+    {name:'harimau', file:'harimau', view:'🐯', bunyi:'grrrr aumm'},
+    {name:'gajah',   file:'gajah',   view:'🐘', bunyi:'tuuut tuuut'},
+    {name:'monyet',  file:'monyet',  view:'🐵', bunyi:'uu aa uu aa'},
+    {name:'burung',  file:'burung',  view:'🐦', bunyi:'cit cit cuit'},
+    {name:'katak',   file:'katak',   view:'🐸', bunyi:'kongkong'},
+    {name:'ular',    file:'ular',    view:'🐍', bunyi:'sssss'},
+    {name:'lebah',   file:'lebah',   view:'🐝', bunyi:'zzzzz'},
+    {name:'ikan',    file:'ikan',    view:'🐟', bunyi:'blub blub'}
+  ],
+  bentuk: [
+    {name:'lingkaran', view:'⭕'},{name:'persegi',   view:'🟦'},
+    {name:'segitiga',  view:'🔺'},{name:'bintang',   view:'⭐'},
+    {name:'hati',      view:'❤️'}
+  ],
+  // Buah dan sayur (jenis: 'buah' atau 'sayur'). Tambah item baru di sini.
+  buahsayur: [
+    {name:'apel',         view:'🍎', jenis:'buah'},
+    {name:'pisang',       view:'🍌', jenis:'buah'},
+    {name:'jeruk',        view:'🍊', jenis:'buah'},
+    {name:'anggur',       view:'🍇', jenis:'buah'},
+    {name:'semangka',     view:'🍉', jenis:'buah'},
+    {name:'stroberi',     view:'🍓', jenis:'buah'},
+    {name:'nanas',        view:'🍍', jenis:'buah'},
+    {name:'mangga',       view:'🥭', jenis:'buah'},
+    {name:'melon',        view:'🍈', jenis:'buah'},
+    {name:'pir',          view:'🍐', jenis:'buah'},
+    {name:'persik',       view:'🍑', jenis:'buah'},
+    {name:'ceri',         view:'🍒', jenis:'buah'},
+    {name:'kelapa',       view:'🥥', jenis:'buah'},
+    {name:'lemon',        view:'🍋', jenis:'buah'},
+    {name:'kiwi',         view:'🥝', jenis:'buah'},
+    {name:'blueberry',    view:'🫐', jenis:'buah'},
+    {name:'wortel',       view:'🥕', jenis:'sayur'},
+    {name:'brokoli',      view:'🥦', jenis:'sayur'},
+    {name:'jagung',       view:'🌽', jenis:'sayur'},
+    {name:'terong',       view:'🍆', jenis:'sayur'},
+    {name:'kentang',      view:'🥔', jenis:'sayur'},
+    {name:'bawang merah', view:'🧅', jenis:'sayur'},
+    {name:'bawang putih', view:'🧄', jenis:'sayur'},
+    {name:'cabai',        view:'🌶️', jenis:'sayur'},
+    {name:'mentimun',     view:'🥒', jenis:'sayur'},
+    {name:'sawi',         view:'🥬', jenis:'sayur'},
+    {name:'paprika',      view:'🫑', jenis:'sayur'},
+    {name:'ubi',          view:'🍠', jenis:'sayur'}
+  ],
+  // Huruf ABC: tampil besar dan kecil sekaligus, misalnya "Bb"
+  alfabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(h => ({name:h, view:h + h.toLowerCase()})),
+  // Benda sekitar yang akrab bagi anak (tambah benda baru di sini)
+  benda: [
+    {name:'sendok',       view:'🥄'}, {name:'piring',     view:'🍽️'},
+    {name:'gelas',        view:'🥛'}, {name:'cangkir',    view:'☕'},
+    {name:'kursi',        view:'🪑'}, {name:'pintu',      view:'🚪'},
+    {name:'tempat tidur', view:'🛏️'}, {name:'sepatu',     view:'👟'},
+    {name:'sandal',       view:'🩴'}, {name:'topi',       view:'🧢'},
+    {name:'tas',          view:'🎒'}, {name:'kunci',      view:'🔑'},
+    {name:'jam',          view:'⏰'}, {name:'payung',     view:'☂️'},
+    {name:'sikat gigi',   view:'🪥'}, {name:'sabun',      view:'🧼'},
+    {name:'lampu',        view:'💡'}, {name:'buku',       view:'📖'},
+    {name:'pensil',       view:'✏️'}, {name:'bola',       view:'⚽'},
+    {name:'boneka',       view:'🧸'}, {name:'mobil',      view:'🚗'},
+    {name:'sepeda',       view:'🚲'}, {name:'telepon',    view:'📱'},
+    {name:'televisi',     view:'📺'}, {name:'gunting',    view:'✂️'},
+    {name:'kacamata',     view:'👓'}, {name:'baju',       view:'👕'},
+    {name:'celana',       view:'👖'}, {name:'ember',      view:'🪣'},
+    {name:'sapu',         view:'🧹'}
+  ],
+  // Anggota tubuh (tambah baru di sini)
+  tubuh: [
+    {name:'mata',    view:'👁️'}, {name:'hidung', view:'👃'},
+    {name:'telinga', view:'👂'}, {name:'mulut',  view:'👄'},
+    {name:'tangan',  view:'✋'}, {name:'kaki',   view:'🦶'},
+    {name:'gigi',    view:'🦷'}, {name:'lidah',  view:'👅'},
+    {name:'otak',    view:'🧠'}
+  ],
+  angka: [1,2,3,4,5].map(n => ({name:String(n), view:String(n)})),
+  // setiap huruf diberi nama file rekaman: huruf1 (alif) sampai huruf28 (ya)
+  hijaiyah: HIJAIYAH.slice(0, JUMLAH_HURUF).map((h,i) => ({name:h.name, view:h.view, file:'huruf'+(i+1)}))
+};
+
+let mode, target, score = 0, locked = false, tanyaSuara = false;
+
+const $ = id => document.getElementById(id);
+const shuffle = a => [...a].sort(() => Math.random() - .5);
+const acak = a => a[Math.floor(Math.random()*a.length)];
+
+// ================= SUARA UCAPAN =================
+const _utt = [];
+function say(t, onend){
+  let selesai = false;
+  const fin = () => { if(!selesai){ selesai = true; if(onend) onend(); } };
+  try{
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = 'id-ID'; u.rate = .9; u.pitch = 1; u.volume = 1;
+    u.onend = fin; u.onerror = fin;
+    _utt.push(u); if(_utt.length > 10) _utt.shift(); // cegah dibuang Chrome
+    speechSynthesis.resume();
+    speechSynthesis.speak(u);
+    setTimeout(fin, 6000 + t.length*150);
+  }catch(e){ fin(); }
+}
+function speak(t){
+  try{ speechSynthesis.cancel(); }catch(e){}
+  setTimeout(() => say(t), 150);
+}
+
+// ================= DAFTAR NAMA ANAK =================
+const KUNCI_LIST = 'belajar_daftar_nama';
+const KUNCI_PILIH = 'belajar_nama_aktif';
+let DAFTAR_NAMA = [...NAMA_AWAL];
+
+function muatNama(){
+  try{
+    const l = JSON.parse(localStorage.getItem(KUNCI_LIST) || 'null');
+    if(Array.isArray(l) && l.length) DAFTAR_NAMA = l.filter(x => typeof x === 'string' && x);
+    if(!DAFTAR_NAMA.length) DAFTAR_NAMA = [...NAMA_AWAL];
+    const p = localStorage.getItem(KUNCI_PILIH);
+    NAMA = (p && DAFTAR_NAMA.indexOf(p) > -1) ? p : DAFTAR_NAMA[0];
+  }catch(e){
+    NAMA = DAFTAR_NAMA[0];
+  }
+}
+function simpanNama(){
+  try{
+    localStorage.setItem(KUNCI_LIST, JSON.stringify(DAFTAR_NAMA));
+    localStorage.setItem(KUNCI_PILIH, NAMA);
+  }catch(e){}
+}
+function renderNama(){
+  const box = $('namaList');
+  box.innerHTML = '';
+  DAFTAR_NAMA.forEach(n => {
+    const b = document.createElement('button');
+    b.className = 'nm' + (n === NAMA ? ' aktif' : '');
+    b.textContent = n;
+    b.onclick = () => pilihNama(n);
+    box.appendChild(b);
+  });
+}
+function pilihNama(n){
+  NAMA = n;
+  simpanNama();
+  renderNama();
+  try{ getAC(); }catch(e){}
+  try{ speechSynthesis.speak(new SpeechSynthesisUtterance('')); }catch(e){}
+  speak(`Halo ${n}! Ayo belajar`);
+}
+function tambahNama(){
+  if(DAFTAR_NAMA.length >= MAKS_NAMA){
+    alert('Daftar nama sudah penuh (maksimal ' + MAKS_NAMA + '). Hapus salah satu dulu.');
+    return;
+  }
+  let n = prompt('Tulis nama anak:');
+  if(!n) return;
+  n = n.trim().replace(/\s+/g,' ').slice(0,20);
+  if(!n) return;
+  n = n.charAt(0).toUpperCase() + n.slice(1);
+  const sudah = DAFTAR_NAMA.some(x => x.toLowerCase() === n.toLowerCase());
+  if(sudah){ alert('Nama ' + n + ' sudah ada.'); return; }
+  DAFTAR_NAMA.push(n);
+  pilihNama(n);
+}
+function hapusNama(){
+  if(DAFTAR_NAMA.length <= 1){
+    alert('Minimal harus ada satu nama.');
+    return;
+  }
+  if(!confirm('Hapus nama ' + NAMA + '?')) return;
+  DAFTAR_NAMA = DAFTAR_NAMA.filter(x => x !== NAMA);
+  NAMA = DAFTAR_NAMA[0];
+  simpanNama();
+  renderNama();
+}
+
+// ================= NADA & SUARA BUATAN =================
+let ac;
+function getAC(){
+  ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+  if(ac.state === 'suspended') ac.resume();
+  return ac;
+}
+// not: [tipe, freqAwal, freqAkhir, mulai(detik), durasi(detik), volume]
+function mainkan(notes){
+  try{
+    const a = getAC();
+    let total = 0;
+    notes.forEach(([tipe,f0,f1,t,d,v]) => {
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipe;
+      const t0 = a.currentTime + t;
+      o.frequency.setValueAtTime(f0, t0);
+      o.frequency.linearRampToValueAtTime(f1, t0 + d);
+      g.gain.setValueAtTime(0.001, t0);
+      g.gain.linearRampToValueAtTime(v, t0 + Math.min(.05, d/3));
+      g.gain.exponentialRampToValueAtTime(.001, t0 + d);
+      o.connect(g); g.connect(a.destination);
+      o.start(t0); o.stop(t0 + d + .02);
+      total = Math.max(total, t + d);
+    });
+    return total;
+  }catch(e){ return 0; }
+}
+const tingBenar = () => mainkan([['sine',660,660,0,.15,.3],['sine',880,880,.15,.15,.3],['sine',1100,1100,.3,.25,.3]]);
+const tingSalah = () => mainkan([['triangle',220,200,0,.22,.3],['triangle',160,140,.22,.3,.3]]);
+const tingKlik  = () => mainkan([['sine',700,700,0,.08,.2]]);
+
+const SINTETIS = {
+  anjing:  [['sawtooth',350,150,0,.18,.4],['sawtooth',350,150,.35,.18,.4],['sawtooth',350,150,.7,.18,.4]],
+  kucing:  [['sine',500,900,0,.25,.4],['sine',900,600,.25,.5,.4],['triangle',1000,700,.25,.5,.15]],
+  sapi:    [['sawtooth',130,90,0,1.4,.35],['sawtooth',65,45,0,1.4,.25]],
+  ayam:    [['sawtooth',500,900,0,.3,.3],['sawtooth',900,1000,.3,.4,.3],['sawtooth',1000,450,.7,.6,.3]],
+  bebek:   [['square',520,380,0,.15,.25],['square',520,380,.25,.15,.25],['square',520,380,.5,.15,.25]],
+  kambing: [['sawtooth',480,430,0,.3,.3],['sawtooth',430,380,.35,.5,.3],['sawtooth',500,450,1,.3,.3],['sawtooth',450,390,1.35,.5,.3]],
+  domba:   [['sawtooth',420,380,0,.35,.3],['sawtooth',380,330,.4,.6,.3],['sawtooth',440,400,1.15,.35,.3],['sawtooth',400,340,1.55,.6,.3]],
+  kuda:    [['sawtooth',700,1300,0,.3,.3],['sawtooth',1300,900,.3,.2,.3],['sawtooth',900,1250,.5,.2,.3],['sawtooth',1250,500,.7,.5,.3]],
+  babi:    [['sawtooth',220,160,0,.2,.35],['sawtooth',200,150,.3,.2,.35],['sawtooth',220,160,.6,.2,.35]],
+  singa:   [['sawtooth',200,300,0,.4,.35],['sawtooth',300,90,.4,1.2,.4],['sawtooth',150,60,.4,1.2,.3]],
+  harimau: [['sawtooth',180,260,0,.3,.35],['sawtooth',260,80,.3,1,.4],['sawtooth',130,55,.3,1,.3]],
+  gajah:   [['sawtooth',250,800,0,.6,.35],['sawtooth',800,900,.6,.4,.35],['sawtooth',900,300,1,.5,.35]],
+  monyet:  [['square',600,900,0,.12,.25],['square',900,600,.15,.12,.25],['square',600,900,.3,.12,.25],['square',900,600,.45,.12,.25],['square',650,950,.65,.12,.25],['square',950,650,.8,.12,.25]],
+  burung:  [['sine',1800,2600,0,.1,.3],['sine',2600,1900,.12,.1,.3],['sine',1800,2600,.3,.1,.3],['sine',2600,1900,.42,.1,.3],['sine',2000,2800,.6,.15,.3]],
+  katak:   [['square',130,110,0,.12,.3],['square',130,110,.18,.12,.3],['square',130,110,.36,.12,.3],['square',130,110,.54,.12,.3],['square',130,110,.72,.12,.3]],
+  ular:    [['sawtooth',3800,3400,0,1.3,.12],['sawtooth',4200,3600,0,1.3,.1]],
+  lebah:   [['sawtooth',150,155,0,1.4,.25],['sawtooth',300,310,0,1.4,.12]],
+  ikan:    [['sine',400,900,0,.12,.4],['sine',500,1000,.25,.12,.4],['sine',450,950,.5,.12,.4],['sine',600,1100,.75,.12,.4]]
+};
+
+// ================= SUARA HEWAN (maks DURASI_MAKS detik, bisa diatur per hewan) =================
+const DURASI_MAKS = 2; // detik, ubah angka ini kalau mau lebih pendek/panjang
+
+function suaraHewan(h, done){
+  const maks = h.maks || DURASI_MAKS;   // batas durasi per hewan
+  let selesai = false;
+  const fin = () => { if(!selesai){ selesai = true; done(); } };
+  const cadangan = () => {
+    if(selesai) return;
+    const d = mainkan(SINTETIS[h.file] || []);
+    setTimeout(fin, Math.min(d, maks)*1000 + 300);
+  };
+  const exts = ['mp3','wav','ogg','m4a'];
+  const coba = i => {
+    if(selesai) return;
+    if(i >= exts.length){ cadangan(); return; }
+    let lanjut = false, mulai = false;
+    const berikut = () => { if(!lanjut && !mulai){ lanjut = true; coba(i+1); } };
+    const a = new Audio(h.file + '.' + exts[i]);
+    if(h.mulai){
+      // lompati bagian sunyi di awal rekaman
+      a.addEventListener('loadedmetadata', () => { try{ a.currentTime = h.mulai; }catch(e){} });
+    }
+    a.onplaying = () => {
+      if(mulai) return;
+      mulai = true;
+      setTimeout(() => {
+        const iv = setInterval(() => {
+          if(a.volume > .1){ a.volume = Math.max(0, a.volume - .2); }
+          else { clearInterval(iv); }
+        }, 100);
+      }, Math.max(0, maks*1000 - 500));
+      setTimeout(() => { a.pause(); fin(); }, maks*1000);
+    };
+    a.onended = fin;
+    a.onerror = berikut;
+    const p = a.play();
+    if(p && p.catch) p.catch(berikut);
+    setTimeout(() => { if(!mulai){ a.pause(); berikut(); } }, 5000);
+  };
+  coba(0);
+  setTimeout(fin, 15000);
+}
+
+// ================= SUARA HURUF HIJAIYAH (rekaman sendiri) =================
+// Memutar huruf1.mp3 ... huruf28.mp3. Kalau file tidak ada, memakai suara sistem.
+function suaraHuruf(h, done){
+  let selesai = false;
+  const fin = () => { if(!selesai){ selesai = true; if(done) done(); } };
+  const cadangan = () => { if(!selesai) say(h.name, fin); };
+  const exts = ['mp3','m4a','wav','ogg'];
+  const coba = i => {
+    if(selesai) return;
+    if(i >= exts.length){ cadangan(); return; }
+    let lanjut = false, mulai = false;
+    const berikut = () => { if(!lanjut && !mulai){ lanjut = true; coba(i+1); } };
+    const a = new Audio(h.file + '.' + exts[i]);
+    a.onplaying = () => { mulai = true; };
+    a.onended = fin;
+    a.onerror = berikut;
+    const p = a.play();
+    if(p && p.catch) p.catch(berikut);
+    setTimeout(() => { if(!mulai){ a.pause(); berikut(); } }, 5000);
+  };
+  coba(0);
+  setTimeout(fin, 12000);
+}
+
+// ================= ALUR GAME =================
+function tesSuara(){
+  try{ getAC(); }catch(e){}
+  tingBenar();
+  setTimeout(() => speak(`Halo ${NAMA}! Ayo belajar`), 600);
+}
+
+function start(m){
+  try{ getAC(); }catch(e){}
+  try{ speechSynthesis.speak(new SpeechSynthesisUtterance('')); }catch(e){}
+  mode = m; score = 0; renderStars();
+  $('menu').classList.add('hidden');
+  $('game').classList.remove('hidden');
+  next();
+}
+function home(){
+  try{ speechSynthesis.cancel(); }catch(e){}
+  srun = false;
+  paktif = false;
+  $('game').classList.add('hidden');
+  $('jalan').classList.add('hidden');
+  $('susun').classList.add('hidden');
+  $('pasang').classList.add('hidden');
+  $('menu').classList.remove('hidden');
+}
+function renderStars(){ $('stars').textContent = '⭐'.repeat(Math.min(score,10)); }
+
+function questionText(){
+  if(mode==='angka') return 'Ada berapa apel?';
+  if(mode==='warna') return `Mana yang warna ${target.name}?`;
+  if(mode==='hijaiyah') return `Mana huruf ${target.name}?`;
+  if(mode==='alfabet') return `Mana huruf ${target.name}?`;
+  if(mode==='benda' || mode==='buahsayur') return `Mana gambar ${target.name}?`;
+  if(mode==='tubuh') return `Mana ${target.name}?`;
+  if(mode==='hewan'){
+    return tanyaSuara ? 'Siapa yang bersuara...'
+                      : `Mana gambar ${target.name}?`;
+  }
+  return `Mana yang ${target.name}?`;
+}
+function ulang(){
+  try{ speechSynthesis.cancel(); }catch(e){}
+  if(mode==='hewan' && tanyaSuara){
+    // 1) sistem: "Siapa yang bersuara"  2) rekaman hewan
+    say('Siapa yang bersuara', () => {
+      setTimeout(() => suaraHewan(target, () => {}), 200);
+    });
+  } else if(mode==='hijaiyah'){
+    // 1) sistem: "Mana huruf"  2) rekaman huruf
+    say('Mana huruf', () => {
+      setTimeout(() => suaraHuruf(target), 200);
+    });
+  } else {
+    say(questionText());
+  }
+}
+
+function next(){
+  locked = false;
+  // ambil 3 pilihan dengan nama berbeda (supaya dua huruf "ha" tidak muncul bersamaan)
+  const opts = [];
+  for(const p of shuffle(DATA[mode])){
+    if(!opts.some(x => x.name === p.name)) opts.push(p);
+    if(opts.length === 3) break;
+  }
+  target = acak(opts);
+  tanyaSuara = (mode==='hewan' && Math.random() < .5);
+  $('stage').innerHTML = mode==='angka' ? '🍎'.repeat(+target.name)
+                       : (tanyaSuara ? '🔊' : '');
+  $('q').textContent = questionText();
+  $('choices').innerHTML = '';
+  opts.forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'choice' + (mode==='hijaiyah' ? ' ar' : '') + (mode==='alfabet' ? ' abc' : '');
+    b.innerHTML = o.view;
+    b.onclick = () => jawab(b, o);
+    $('choices').appendChild(b);
+  });
+  setTimeout(ulang, 400);
+}
+
+// nama yang diucapkan untuk sebuah pilihan (huruf diberi awalan "huruf")
+function sebutPilihan(o){
+  return ((mode === 'hijaiyah' || mode === 'alfabet') ? 'huruf ' : '') + o.name;
+}
+
+function jawab(btn, o){
+  if(locked) return;
+  try{ getAC(); }catch(e){}
+
+  if(o === target){
+    locked = true; score++; renderStars();
+    btn.classList.add('pop');
+    confetti();
+    try{ speechSynthesis.cancel(); }catch(e){}
+
+    let lanjut = false;
+    const go = () => { if(!lanjut){ lanjut = true; next(); } };
+    setTimeout(go, 25000); // cadangan
+
+    // "Ya betul, itu harimau" -> "Alhamdulillah, (nama) betul!" -> "Ayo lanjutkan (nama)!"
+    const ucapan = () => {
+      say(`Ya betul, itu ${sebutPilihan(o)}`);
+      if(mode === 'buahsayur') say(`${o.name} itu ${o.jenis}`);
+      say(`Alhamdulillah, ${NAMA} betul!`);
+      say(`Ayo lanjutkan ${NAMA}!`, go);
+    };
+
+    if(mode === 'hewan'){
+      suaraHewan(o, () => setTimeout(ucapan, 300));
+    } else if(mode === 'hijaiyah'){
+      // rekaman huruf diputar lagi, lalu ucapan sistem
+      tingBenar();
+      setTimeout(() => suaraHuruf(o, () => setTimeout(ucapan, 300)), 500);
+    } else {
+      tingBenar();
+      setTimeout(ucapan, 700);
+    }
+  } else {
+    btn.classList.remove('shake'); void btn.offsetWidth; btn.classList.add('shake');
+    tingSalah();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    // "Sayang sekali, (nama) salah. Yang (nama) pilih itu babi. Coba lagi ya (nama)"
+    setTimeout(() => say(`Sayang sekali, ${NAMA} salah. Yang ${NAMA} pilih itu ${sebutPilihan(o)}. Coba lagi ya ${NAMA}`), 450);
+  }
+}
+
+function confetti(){
+  const e = ['⭐','🎉','🎈','✨','💖'];
+  for(let i=0;i<14;i++){
+    const s = document.createElement('div');
+    s.className = 'fall';
+    s.textContent = acak(e);
+    s.style.left = Math.random()*95 + 'vw';
+    s.style.animationDelay = Math.random()*.4 + 's';
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 2200);
+  }
+}
+
+// ================= GAME JALAN =================
+const JR = 4, JC = 3; // jumlah baris dan kolom (boleh diubah)
+let jgrid = [], jpos = [0,0], jgoal = [0,0], jvisited = {};
+const jkey = (r,c) => r + ',' + c;
+
+function buatJalan(){
+  const dirs = [[1,0],[-1,0],[0,1],[0,-1]];
+  const sc = Math.floor(Math.random()*JC);
+  const gc = Math.floor(Math.random()*JC);
+  const goal = [JR-1, gc];
+  const seen = {}, path = [];
+  function dfs(r,c){
+    seen[jkey(r,c)] = 1; path.push([r,c]);
+    if(r === goal[0] && c === goal[1]) return true;
+    for(const [dr,dc] of shuffle(dirs)){
+      const nr = r+dr, nc = c+dc;
+      if(nr<0 || nc<0 || nr>=JR || nc>=JC || seen[jkey(nr,nc)]) continue;
+      if(dfs(nr,nc)) return true;
+    }
+    path.pop(); return false;
+  }
+  dfs(0, sc);
+  jgrid = Array.from({length:JR}, () => Array(JC).fill(0));
+  path.forEach(([r,c]) => jgrid[r][c] = 1);
+  // jalan buntu (pengecoh)
+  for(let r=0;r<JR;r++) for(let c=0;c<JC;c++){
+    if(!jgrid[r][c] && Math.random() < .3) jgrid[r][c] = 1;
+  }
+  jpos = [0, sc]; jgoal = goal;
+  jvisited = {}; jvisited[jkey(0,sc)] = 1;
+}
+
+function renderJalan(){
+  const g = $('jgrid');
+  g.style.gridTemplateColumns = `repeat(${JC},1fr)`;
+  g.innerHTML = '';
+  for(let r=0;r<JR;r++) for(let c=0;c<JC;c++){
+    const b = document.createElement('button');
+    let cls = 'jc', isi = '';
+    if(!jgrid[r][c]){ cls += ' blok'; isi = '🌳'; }
+    else if(jvisited[jkey(r,c)]) cls += ' lalu';
+    if(r === jgoal[0] && c === jgoal[1]) isi = '🥕';
+    if(r === jpos[0] && c === jpos[1]) isi = '🐰';
+    b.className = cls; b.textContent = isi;
+    b.onclick = () => tapJalan(b, r, c);
+    g.appendChild(b);
+  }
+}
+
+function renderJStars(){ $('jstars').textContent = '⭐'.repeat(Math.min(score,10)); }
+
+function startJalan(){
+  try{ getAC(); }catch(e){}
+  try{ speechSynthesis.speak(new SpeechSynthesisUtterance('')); }catch(e){}
+  mode = 'jalan'; score = 0; renderJStars();
+  $('menu').classList.add('hidden');
+  $('jalan').classList.remove('hidden');
+  nextJalan();
+}
+
+function nextJalan(){
+  locked = false;
+  buatJalan();
+  renderJalan();
+  setTimeout(ulangJalan, 400);
+}
+
+function ulangJalan(){
+  try{ speechSynthesis.cancel(); }catch(e){}
+  setTimeout(() => say('Bantu kelinci cari jalan ke wortel'), 150);
+}
+
+function tapJalan(btn, r, c){
+  if(locked) return;
+  try{ getAC(); }catch(e){}
+  const jarak = Math.abs(r - jpos[0]) + Math.abs(c - jpos[1]);
+  if(jarak !== 1){ // bukan kotak sebelah kelinci
+    btn.classList.remove('shake'); void btn.offsetWidth; btn.classList.add('shake');
+    return;
+  }
+  if(!jgrid[r][c]){ // pohon: salah
+    btn.classList.remove('shake'); void btn.offsetWidth; btn.classList.add('shake');
+    tingSalah();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    setTimeout(() => say(`${NAMA} salah. Coba lagi ya ${NAMA}`), 450);
+    return;
+  }
+  jpos = [r, c];
+  jvisited[jkey(r,c)] = 1;
+  renderJalan();
+  if(r === jgoal[0] && c === jgoal[1]){
+    locked = true; score++; renderJStars();
+    confetti(); tingBenar();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    let lanjut = false;
+    const go = () => { if(!lanjut){ lanjut = true; nextJalan(); } };
+    setTimeout(go, 15000); // cadangan
+    setTimeout(() => {
+      say(`Alhamdulillah, ${NAMA} betul!`);
+      say(`Ayo lanjutkan ${NAMA}!`, go);
+    }, 700);
+  }
+}
+
+// ================= GAME SUSUN LANGKAH =================
+const SR = 3, SC = 3;          // ukuran papan (baris x kolom)
+const SJARAK = [2, 3];         // jarak kelinci ke wortel (jumlah langkah minimal)
+const SMAKS = 6;               // maksimal panah yang boleh disusun
+const PANAH = {atas:'⬆️', bawah:'⬇️', kiri:'⬅️', kanan:'➡️'};
+const ARAH  = {atas:[-1,0], bawah:[1,0], kiri:[0,-1], kanan:[0,1]};
+let sstart = [0,0], sgoal = [0,0], spos = [0,0], sseq = [], srun = false;
+
+function buatSusun(){
+  const jarakTarget = acak(SJARAK);
+  let s, g, tries = 0;
+  do {
+    s = [Math.floor(Math.random()*SR), Math.floor(Math.random()*SC)];
+    g = [Math.floor(Math.random()*SR), Math.floor(Math.random()*SC)];
+    tries++;
+  } while(Math.abs(s[0]-g[0]) + Math.abs(s[1]-g[1]) !== jarakTarget && tries < 200);
+  sstart = s; sgoal = g; spos = [s[0], s[1]]; sseq = []; srun = false;
+}
+
+function renderSusun(){
+  const g = $('sgrid');
+  g.style.gridTemplateColumns = `repeat(${SC},1fr)`;
+  g.innerHTML = '';
+  for(let r=0;r<SR;r++) for(let c=0;c<SC;c++){
+    const b = document.createElement('button');
+    let isi = '';
+    if(r === sgoal[0] && c === sgoal[1]) isi = '🥕';
+    if(r === spos[0] && c === spos[1]) isi = '🐰';
+    b.className = 'jc'; b.textContent = isi; b.disabled = true;
+    g.appendChild(b);
+  }
+  renderSeq();
+}
+function renderSeq(){
+  $('sseq').textContent = sseq.map(d => PANAH[d]).join(' ');
+}
+function renderSStars(){ $('sstars').textContent = '⭐'.repeat(Math.min(score,10)); }
+
+function startSusun(){
+  try{ getAC(); }catch(e){}
+  try{ speechSynthesis.speak(new SpeechSynthesisUtterance('')); }catch(e){}
+  mode = 'susun'; score = 0; renderSStars();
+  $('menu').classList.add('hidden');
+  $('susun').classList.remove('hidden');
+  nextSusun();
+}
+function nextSusun(){
+  locked = false;
+  buatSusun();
+  renderSusun();
+  setTimeout(ulangSusun, 400);
+}
+function ulangSusun(){
+  try{ speechSynthesis.cancel(); }catch(e){}
+  setTimeout(() => say('Susun panah supaya kelinci sampai ke wortel. Lalu tekan tombol hijau'), 150);
+}
+
+function tambahLangkah(d){
+  if(srun || locked) return;
+  try{ getAC(); }catch(e){}
+  if(sseq.length >= SMAKS){ tingSalah(); return; }
+  sseq.push(d);
+  tingKlik();
+  renderSeq();
+}
+function hapusLangkah(){
+  if(srun || locked) return;
+  sseq = [];
+  renderSeq();
+}
+
+function jalankanSusun(){
+  if(srun || locked) return;
+  try{ getAC(); }catch(e){}
+  if(!sseq.length){ tingSalah(); return; }
+  srun = true;
+  spos = [sstart[0], sstart[1]];
+  renderSusun();
+  let i = 0;
+  const langkah = () => {
+    if(!srun) return; // dibatalkan (tombol rumah)
+    if(i >= sseq.length){ selesaiSusun(); return; }
+    const d = ARAH[sseq[i]];
+    const nr = spos[0] + d[0], nc = spos[1] + d[1];
+    if(nr >= 0 && nc >= 0 && nr < SR && nc < SC){ spos = [nr, nc]; }
+    tingKlik();
+    renderSusun();
+    i++;
+    setTimeout(langkah, 650);
+  };
+  setTimeout(langkah, 400);
+}
+
+function selesaiSusun(){
+  srun = false;
+  if(spos[0] === sgoal[0] && spos[1] === sgoal[1]){
+    locked = true; score++; renderSStars();
+    confetti(); tingBenar();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    let lanjut = false;
+    const go = () => { if(!lanjut){ lanjut = true; nextSusun(); } };
+    setTimeout(go, 15000); // cadangan
+    setTimeout(() => {
+      say(`Alhamdulillah, ${NAMA} betul!`);
+      say(`Ayo lanjutkan ${NAMA}!`, go);
+    }, 700);
+  } else {
+    tingSalah();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    setTimeout(() => say(`${NAMA} salah. Coba lagi ya ${NAMA}`), 450);
+    setTimeout(() => {
+      spos = [sstart[0], sstart[1]];
+      sseq = [];
+      renderSusun();
+    }, 1500);
+  }
+}
+
+// ================= GAME COCOKKAN PASANGAN =================
+const PASANG_JUMLAH = 3;   // jumlah pasangan (3 = 6 kartu). Untuk lebih sulit: 4 (8 kartu)
+const PASANG_KOLOM = 3;    // jumlah kolom kartu
+let pkartu = [], pbuka = [], pcocok = 0, plock = false, paktif = false;
+
+function buatPasang(){
+  const pilih = shuffle(DATA.hewan).slice(0, PASANG_JUMLAH);
+  pkartu = shuffle([...pilih, ...pilih]).map(h => ({h: h, buka: false, selesai: false}));
+  pbuka = []; pcocok = 0; plock = false;
+}
+
+function renderPasang(){
+  const g = $('pgrid');
+  g.style.gridTemplateColumns = `repeat(${PASANG_KOLOM},1fr)`;
+  g.innerHTML = '';
+  pkartu.forEach((k, i) => {
+    const b = document.createElement('button');
+    let cls = 'kartu';
+    if(k.selesai) cls += ' cocok'; else if(k.buka) cls += ' buka';
+    b.className = cls;
+    b.textContent = (k.buka || k.selesai) ? k.h.view : '❓';
+    b.onclick = () => tapKartu(i);
+    g.appendChild(b);
+  });
+}
+function renderPStars(){ $('pstars').textContent = '⭐'.repeat(Math.min(score,10)); }
+
+function startPasang(){
+  try{ getAC(); }catch(e){}
+  try{ speechSynthesis.speak(new SpeechSynthesisUtterance('')); }catch(e){}
+  mode = 'pasang'; score = 0; paktif = true; renderPStars();
+  $('menu').classList.add('hidden');
+  $('pasang').classList.remove('hidden');
+  nextPasang();
+}
+function nextPasang(){
+  if(!paktif) return;
+  buatPasang();
+  renderPasang();
+  setTimeout(ulangPasang, 400);
+}
+function ulangPasang(){
+  try{ speechSynthesis.cancel(); }catch(e){}
+  setTimeout(() => say('Cari dua gambar yang sama'), 150);
+}
+
+function tapKartu(i){
+  if(plock || !paktif) return;
+  const k = pkartu[i];
+  if(k.buka || k.selesai) return;
+  try{ getAC(); }catch(e){}
+  k.buka = true;
+  pbuka.push(i);
+  tingKlik();
+  renderPasang();
+  speak(k.h.name);
+
+  if(pbuka.length === 2){
+    plock = true;
+    const a = pkartu[pbuka[0]], b = pkartu[pbuka[1]];
+    if(a.h.name === b.h.name){
+      // SAMA
+      setTimeout(() => {
+        if(!paktif) return;
+        a.selesai = true; b.selesai = true; a.buka = false; b.buka = false;
+        pbuka = []; pcocok++;
+        renderPasang();
+        if(pcocok >= PASANG_JUMLAH){
+          score++; renderPStars();
+          confetti(); tingBenar();
+          try{ speechSynthesis.cancel(); }catch(e){}
+          let lanjut = false;
+          const go = () => { if(!lanjut){ lanjut = true; nextPasang(); } };
+          setTimeout(go, 15000); // cadangan
+          setTimeout(() => {
+            if(!paktif) return;
+            say(`Alhamdulillah, ${NAMA} betul!`);
+            say(`Ayo lanjutkan ${NAMA}!`, go);
+          }, 700);
+        } else {
+          tingBenar();
+          setTimeout(() => { if(paktif) say('Sama!'); }, 400);
+          plock = false;
+        }
+      }, 900);
+    } else {
+      // BEDA
+      setTimeout(() => {
+        if(!paktif) return;
+        tingSalah();
+        try{ speechSynthesis.cancel(); }catch(e){}
+        setTimeout(() => { if(paktif) say(`Belum sama. Coba lagi ya ${NAMA}`); }, 400);
+      }, 900);
+      setTimeout(() => {
+        if(!paktif) return;
+        a.buka = false; b.buka = false;
+        pbuka = []; plock = false;
+        renderPasang();
+      }, 2300);
+    }
+  }
+}
+
+// ================= MULAI =================
+muatNama();
+renderNama();
+
+// ================= PWA (bisa dipasang & offline) =================
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
+</script>
+</body>
+</html>
